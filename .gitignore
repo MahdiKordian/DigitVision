@@ -1,0 +1,33 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+
+# --- Secrets & local config ---
+.env
+.streamlit/secrets.toml
+
+# --- IDEs / editors ---
+.vscode/
+.idea/
+*.swp
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs & temp files ---
+*.log
+tmp/
+
+# NOTE: mnist_model.keras and metrics.json are intentionally NOT ignored.
+# The Streamlit Cloud demo needs them at startup.
