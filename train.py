@@ -62,3 +62,16 @@ def build_model():
         metrics=["accuracy"],
     )
     return model
+
+
+def main():
+    (x_train, y_train), (x_test, y_test) = load_data()
+    x_train, x_test = prepare(x_train), prepare(x_test)
+
+    idx = np.random.RandomState(SEED).permutation(len(x_train))
+    x_train, y_train = x_train[idx], y_train[idx]
+    x_val, y_val = x_train[:VAL_SIZE], y_train[:VAL_SIZE]
+    x_tr, y_tr = x_train[VAL_SIZE:], y_train[VAL_SIZE:]
+
+    model = build_model()
+    model.summary()
