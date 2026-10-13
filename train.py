@@ -75,3 +75,20 @@ def main():
 
     model = build_model()
     model.summary()
+
+    cbs = [
+        callbacks.EarlyStopping(monitor="val_accuracy", patience=5,
+                                restore_best_weights=True),
+        callbacks.ReduceLROnPlateau(monitor="val_loss", factor=0.5,
+                                    patience=2, min_lr=1e-5, verbose=1),
+    ]
+
+    start = time.time()
+    history = model.fit(
+        x_tr, y_tr,
+        epochs=EPOCHS,
+        batch_size=BATCH_SIZE,
+        validation_data=(x_val, y_val),
+        callbacks=cbs,
+    )
+    elapsed = time.time() - start
