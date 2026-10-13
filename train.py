@@ -100,3 +100,24 @@ def main():
     per_class = {
         str(d): float(np.mean(preds[y_test == d] == d)) for d in range(10)
     }
+
+    model.save(MODEL_PATH)
+    print(f"Model saved to: {MODEL_PATH}")
+
+    metrics = {
+        "app": APP_NAME,
+        "version": VERSION,
+        "test_accuracy": float(test_acc),
+        "test_loss": float(test_loss),
+        "epochs_run": len(history.history["loss"]),
+        "params": int(model.count_params()),
+        "train_seconds": round(elapsed, 1),
+        "per_class_accuracy": per_class,
+    }
+    with open(METRICS_PATH, "w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=2)
+    print(f"Metrics saved to: {METRICS_PATH}")
+
+
+if __name__ == "__main__":
+    main()
