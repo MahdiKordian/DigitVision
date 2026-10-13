@@ -92,3 +92,11 @@ def main():
         callbacks=cbs,
     )
     elapsed = time.time() - start
+
+    test_loss, test_acc = model.evaluate(x_test, y_test, verbose=0)
+    print(f"\nTest accuracy: {test_acc:.2%}")
+
+    preds = np.argmax(model.predict(x_test, verbose=0), axis=1)
+    per_class = {
+        str(d): float(np.mean(preds[y_test == d] == d)) for d in range(10)
+    }
