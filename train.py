@@ -26,3 +26,39 @@ def load_data():
 
 def prepare(x):
     return x.reshape((-1, 28, 28, 1)).astype("float32") / 255.0
+
+
+def conv_block(x, filters, n=2):
+    for _ in range(n):
+        x = layers.Conv2D(filters, 3, padding="same", use_bias=False)(x)
+        x = layers.BatchNormalization()(x)
+        x = layers.Activation("relu")(x)
+    x = layers.MaxPooling2D(2)(x)
+    return layers.Dropout(0.25)(x)
+
+
+def build_model():
+    inputs = Input(shape=(28, 28, 1))
+
+    x = layers.RandomRotation(0.08, fill_mode="constant")(inputs)
+    x = layers.RandomTranslation(0.1, 0.1, fill_mode="constant")(x)
+    x = layers.RandomZoom(0.12, fill_mode="constant")(x)
+
+    x = conv_block(x, 32)
+    x = conv_block(x, 64)
+    x = conv_block(x, 128, n=1)
+
+    x = layers.Flatten()(x)
+    x = layers.Dense(128, use_bias=False)(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+    x = layers.Dropout(0.4)(x)
+    outputs = layers.Dense(10, activation="softmax")(x)
+
+    model = models.Model(inputs, outputs, name=f"{APP_NAME}_v{VERSION}")
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(1e-3),
+        loss="sparse_categorical_crossentropy",
+        metrics=["accuracy"],
+    )
+    return model
