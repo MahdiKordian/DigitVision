@@ -115,3 +115,70 @@ metrics = get_metrics()
 
 
 def preprocess_for_mnist(image):
+    """
+    تصویر BGR می‌گیره و دیکشنری شامل ورودی 28x28 مدل و مراحل میانی برمی‌گردونه.
+    اگر رقمی پیدا نشه None برمی‌گردونه.
+    """
+    h, w = image.shape[:2]
+    if max(h, w) > 800:
+        s = 800 / max(h, w)
+        image = cv2.resize(image, (int(w * s), int(h * s)), interpolation=cv2.INTER_AREA)
+        h, w = image.shape[:2]
+
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    mask1 = cv2.inRange(hsv, np.array([0, 50, 50]), np.array([10, 255, 255]))
+    mask2 = cv2.inRange(hsv, np.array([170, 50, 50]), np.array([180, 255, 255]))
+    mask = cv2.bitwise_or(mask1, mask2)
+    method = "Red ink"
+
+    if cv2.countNonZero(mask) < max(100, 0.0005 * h * w):
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        _, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        if np.mean(mask > 0) > 0.5:
+            mask = cv2.bitwise_not(mask)
+        method = "Auto threshold (Otsu)"
+
+    kernel = np.ones((3, 3), np.uint8)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        return None
+
+    max_area = max(cv2.contourArea(c) for c in contours)
+    keep = [c for c in contours if cv2.contourArea(c) >= 0.1 * max_area]
+    pts = np.vstack(keep)
+    x, y, bw, bh = cv2.boundingRect(pts)
+    if bw * bh < 50:
+        return None
+
+    digit = mask[y:y + bh, x:x + bw]
+
+    scale = 20 / max(bw, bh)
+    new_w, new_h = max(1, int(bw * scale)), max(1, int(bh * scale))
+    digit = cv2.resize(digit, (new_w, new_h), interpolation=cv2.INTER_AREA)
+
+    canvas = np.zeros((28, 28), dtype=np.uint8)
+    sx, sy = (28 - new_w) // 2, (28 - new_h) // 2
+    canvas[sy:sy + new_h, sx:sx + new_w] = digit
+
+    m = cv2.moments(canvas)
+    if m["m00"] > 0:
+        cx, cy = m["m10"] / m["m00"], m["m01"] / m["m00"]
+        shift = np.float32([[1, 0, 14 - cx], [0, 1, 14 - cy]])
+        canvas = cv2.warpAffine(canvas, shift, (28, 28))
+
+    annotated = image.copy()
+    cv2.rectangle(annotated, (x, y), (x + bw, y + bh), (0, 255, 120), max(2, w // 200))
+
+    return {
+        "input": canvas.astype("float32") / 255.0,
+        "mask": mask,
+        "annotated": cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB),
+        "method": method,
+    }
+
+
+def decode(uploaded):
