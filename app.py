@@ -84,3 +84,13 @@ st.markdown(
 
 st.markdown(
     f"""
+<div class="hero">
+  <h1>🔢 {APP_NAME}<span class="badge">v{VERSION}</span></h1>
+  <p>{TAGLINE}</p>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+
+
+@st.cache_resource
