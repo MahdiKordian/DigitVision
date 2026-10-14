@@ -94,3 +94,24 @@ st.markdown(
 
 
 @st.cache_resource
+def get_model():
+    if not os.path.exists(MODEL_PATH):
+        st.error(f"Model file not found:\n`{MODEL_PATH}`")
+        st.info("Please run `python train.py` first.")
+        st.stop()
+    return load_model(MODEL_PATH)
+
+
+@st.cache_data
+def get_metrics():
+    if os.path.exists(METRICS_PATH):
+        with open(METRICS_PATH, encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+
+model = get_model()
+metrics = get_metrics()
+
+
+def preprocess_for_mnist(image):
