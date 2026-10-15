@@ -331,3 +331,19 @@ with tab_app:
     tab_upload, tab_camera = st.tabs(["📁 Upload image", "📷 Take photo"])
 
     source = None
+    with tab_upload:
+        up = st.file_uploader("Drop an image here", type=["png", "jpg", "jpeg"], key="file")
+        if up is not None:
+            source = up
+    with tab_camera:
+        cam = st.camera_input("Take a photo of a digit", key="cam")
+        if cam is not None:
+            source = cam
+
+    if source is None:
+        st.info("👆 Upload a photo or use your camera to get started.")
+    else:
+        image = decode(source)
+        if image is None:
+            st.error("Could not read this image. Try another file.")
+        else:
