@@ -260,3 +260,29 @@ def render_about():
     st.markdown("## 👨‍💻 About me")
 
     pic_col, info_col = st.columns([1, 4], gap="large")
+    with pic_col:
+        st.image(AUTHOR_AVATAR, width=170)
+    with info_col:
+        st.markdown(
+            f"""
+<p class="author-name">{AUTHOR_NAME}</p>
+<p class="author-title">{AUTHOR_TITLE}</p>
+<p class="author-meta">{AUTHOR_FOCUS}</p>
+<p class="author-meta">📍 {AUTHOR_LOCATION}</p>
+""",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"Hi, I'm {AUTHOR_NAME}. I build machine-learning and deep-learning projects "
+            "and love turning models into tools people can actually use. "
+            f"{APP_NAME} is one of them. Feel free to explore my work and get in touch."
+        )
+
+    link_cols = st.columns(len(AUTHOR_LINKS))
+    for col, (label, url) in zip(link_cols, AUTHOR_LINKS.items()):
+        col.link_button(label, url, use_container_width=True)
+
+
+with st.sidebar:
+    st.markdown(f"## 🔢 {APP_NAME}")
+    st.caption(f"Version {VERSION}")
