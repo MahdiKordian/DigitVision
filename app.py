@@ -193,3 +193,70 @@ def predict(processed_input):
 
 
 def render_about():
+    """About page: project introduction + about the author."""
+    st.markdown("## 🎯 About the project")
+    st.markdown(
+        f"**{APP_NAME}** recognizes handwritten digits from real photos. A compact, "
+        "regularized convolutional neural network trained on MNIST is combined with a "
+        "computer-vision preprocessing pipeline that converts messy, real-world images "
+        "into clean MNIST-style input, so the model works beyond the dataset itself."
+    )
+
+    b1, b2, _ = st.columns([1, 1, 3])
+    b1.link_button("⭐ Source code", REPO_URL, use_container_width=True)
+    b2.link_button("🚀 Live demo", DEMO_URL, use_container_width=True)
+
+    if metrics:
+        st.markdown("&nbsp;", unsafe_allow_html=True)
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Test accuracy", f"{metrics['test_accuracy']:.2%}")
+        m2.metric("Test loss", f"{metrics['test_loss']:.4f}")
+        m3.metric("Parameters", f"{metrics['params']:,}")
+        m4.metric("Epochs run", metrics["epochs_run"])
+
+    st.markdown("&nbsp;", unsafe_allow_html=True)
+    left, right = st.columns(2, gap="large")
+
+    with left:
+        st.markdown(
+            """
+<div class="about-card">
+<h3>⚙️ How it works</h3>
+<div class="step"><div class="num">1</div><div class="txt"><b>Segment</b> — finds red ink via HSV masking, or falls back to Otsu thresholding for dark pen on light paper.</div></div>
+<div class="step"><div class="num">2</div><div class="txt"><b>Clean up</b> — morphological closing and opening remove noise and fill gaps.</div></div>
+<div class="step"><div class="num">3</div><div class="txt"><b>Localize</b> — contours are merged into one bounding box around the digit.</div></div>
+<div class="step"><div class="num">4</div><div class="txt"><b>Normalize</b> — scaled to 20 px, padded to 28×28 and centered by its center of mass, like MNIST.</div></div>
+<div class="step"><div class="num">5</div><div class="txt"><b>Classify</b> — the CNN returns a probability for each digit 0–9.</div></div>
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+
+    with right:
+        st.markdown(
+            """
+<div class="about-card">
+<h3>🧠 Model &amp; stack</h3>
+
+- **Augmentation:** random rotation, translation and zoom
+- **Backbone:** 3 convolutional blocks (32 → 64 → 128 filters) with BatchNorm, ReLU, max-pooling and dropout
+- **Head:** Dense(128) + BatchNorm + Dropout(0.4) → softmax over 10 classes
+- **Training:** Adam, early stopping and learning-rate scheduling
+- **Tools:** TensorFlow / Keras, OpenCV, Streamlit, NumPy, pandas
+
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("&nbsp;", unsafe_allow_html=True)
+    st.info(
+        "**Good to know:** DigitVision reads a single digit per image. The accuracy shown "
+        "above is measured on the MNIST test set; results on real photos depend on lighting, "
+        "pen thickness and image quality, which is why a confidence score is always shown."
+    )
+
+    st.divider()
+    st.markdown("## 👨‍💻 About me")
+
+    pic_col, info_col = st.columns([1, 4], gap="large")
