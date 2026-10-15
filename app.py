@@ -182,3 +182,14 @@ def preprocess_for_mnist(image):
 
 
 def decode(uploaded):
+    data = np.frombuffer(uploaded.getvalue(), dtype=np.uint8)
+    return cv2.imdecode(data, cv2.IMREAD_COLOR)
+
+
+def predict(processed_input):
+    x = processed_input[np.newaxis, ..., np.newaxis]
+    probs = model.predict(x, verbose=0)[0]
+    return probs
+
+
+def render_about():
