@@ -323,3 +323,11 @@ if "history" not in st.session_state:
     st.session_state["history"] = []
 
 tab_app, tab_about = st.tabs(["🔢 Recognize", "ℹ️ About"])
+
+with tab_about:
+    render_about()
+
+with tab_app:
+    tab_upload, tab_camera = st.tabs(["📁 Upload image", "📷 Take photo"])
+
+    source = None
