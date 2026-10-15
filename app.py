@@ -286,3 +286,40 @@ def render_about():
 with st.sidebar:
     st.markdown(f"## 🔢 {APP_NAME}")
     st.caption(f"Version {VERSION}")
+    st.divider()
+
+    st.markdown("### 📊 Model info")
+    if metrics:
+        c1, c2 = st.columns(2)
+        c1.metric("Test accuracy", f"{metrics['test_accuracy']:.2%}")
+        c2.metric("Parameters", f"{metrics['params'] / 1000:.0f}K")
+        st.caption(f"Trained for {metrics['epochs_run']} epochs")
+        with st.expander("Per-digit accuracy"):
+            df = pd.DataFrame(
+                {"Accuracy": metrics["per_class_accuracy"]}
+            )
+            st.bar_chart(df)
+    else:
+        st.info("Run `train.py` to see model stats.")
+
+    st.divider()
+    st.markdown("### 💡 Tips")
+    st.markdown(
+        "- Write **one** digit, large and clear\n"
+        "- Red marker on white paper works best\n"
+        "- Avoid shadows and busy backgrounds\n"
+        "- Dark pen on light paper also works"
+    )
+
+    st.divider()
+    if st.button("🗑️ Clear history", use_container_width=True):
+        st.session_state["history"] = []
+
+    st.divider()
+    st.markdown(f"Built by **[{AUTHOR_NAME}](https://github.com/MahdiKordian)**")
+    st.caption(f"[Source on GitHub]({REPO_URL}) · MIT License")
+
+if "history" not in st.session_state:
+    st.session_state["history"] = []
+
+tab_app, tab_about = st.tabs(["🔢 Recognize", "ℹ️ About"])
