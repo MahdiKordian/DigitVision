@@ -380,3 +380,12 @@ with tab_app:
                 top3 = np.argsort(probs)[::-1][:3]
                 tcols = st.columns(3)
                 for rank, (col, d) in enumerate(zip(tcols, top3), start=1):
+                    col.metric(f"#{rank}", f"Digit {d}", f"{probs[d]:.1%}", delta_color="off")
+                st.bar_chart(
+                    pd.DataFrame({"Probability": probs}, index=[str(i) for i in range(10)])
+                )
+
+                with st.expander("🔬 How DigitVision saw your image"):
+                    p1, p2, p3 = st.columns(3)
+                    p1.image(result["annotated"], caption="1. Detection", use_container_width=True)
+                    p2.image(result["mask"], caption=f"2. Mask ({result['method']})",
