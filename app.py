@@ -401,3 +401,11 @@ with tab_app:
         st.markdown("### 🕘 Recent predictions")
         st.dataframe(
             pd.DataFrame(st.session_state["history"][::-1][:10]),
+            use_container_width=True,
+            hide_index=True,
+        )
+
+st.markdown(
+    f'<div class="footer">{APP_NAME} v{VERSION} · Built with TensorFlow &amp; Streamlit · '
+    f'by <a href="https://github.com/MahdiKordian" target="_blank">{AUTHOR_NAME}</a></div>',
+    unsafe_allow_html=True,
