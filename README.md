@@ -26,3 +26,21 @@ Upload a photo or snap one with your camera, and a CNN trained on MNIST tells yo
 
 ---
 
+## 📖 Table of Contents
+
+- [About the Project](#-about-the-project)
+- [Features](#-features)
+- [How It Works](#️-how-it-works)
+- [Model Architecture](#-model-architecture)
+- [Model Performance](#-model-performance)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Usage Tips](#-usage-tips)
+- [Project Structure](#-project-structure)
+- [Deployment](#️-deployment)
+- [Limitations](#️-limitations)
+- [License](#-license)
+- [Author](#-author)
+
+---
+
