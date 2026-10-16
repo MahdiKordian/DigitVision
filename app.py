@@ -347,3 +347,36 @@ with tab_app:
         if image is None:
             st.error("Could not read this image. Try another file.")
         else:
+            with st.spinner("Analyzing..."):
+                result = preprocess_for_mnist(image)
+
+            if result is None:
+                st.error("Could not detect a digit in the image. Try a clearer photo.")
+            else:
+                probs = predict(result["input"])
+                digit = int(np.argmax(probs))
+                conf = float(np.max(probs))
+
+                level = "high" if conf >= 0.90 else "mid" if conf >= 0.60 else "low"
+
+                col_img, col_res = st.columns([1.2, 1], gap="large")
+                with col_img:
+                    st.image(result["annotated"], caption="Detected digit", use_container_width=True)
+                with col_res:
+                    st.markdown(
+                        f"""
+<div class="result-card {level}">
+  <div class="label">Prediction</div>
+  <div class="digit">{digit}</div>
+  <div class="conf">{conf:.1%} confident</div>
+</div>
+""",
+                        unsafe_allow_html=True,
+                    )
+                    if level == "low":
+                        st.warning("Low confidence. Try a clearer, larger, better-lit image.")
+
+                st.markdown("### 📈 Probability of each digit")
+                top3 = np.argsort(probs)[::-1][:3]
+                tcols = st.columns(3)
+                for rank, (col, d) in enumerate(zip(tcols, top3), start=1):
