@@ -389,3 +389,15 @@ with tab_app:
                     p1, p2, p3 = st.columns(3)
                     p1.image(result["annotated"], caption="1. Detection", use_container_width=True)
                     p2.image(result["mask"], caption=f"2. Mask ({result['method']})",
+                             use_container_width=True, clamp=True)
+                    p3.image((result["input"] * 255).astype("uint8"),
+                             caption="3. Model input (28×28)", width=140, clamp=True)
+
+                st.session_state["history"].append(
+                    {"Digit": digit, "Confidence": f"{conf:.1%}", "Mode": result["method"]}
+                )
+
+    if st.session_state["history"]:
+        st.markdown("### 🕘 Recent predictions")
+        st.dataframe(
+            pd.DataFrame(st.session_state["history"][::-1][:10]),
