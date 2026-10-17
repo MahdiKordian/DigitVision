@@ -97,3 +97,27 @@ You can try it right now: **[digitvision-app.streamlit.app](https://digitvision-
 4. **Normalization**: the digit is resized so its longest side is 20 px, placed on a 28×28 canvas and shifted so its center of mass sits at the center.
 5. **Classification**: the CNN outputs a probability for each digit 0–9.
 
+## 🧠 Model Architecture
+
+A lightweight VGG-style CNN with built-in data augmentation, **289,066 parameters** in total.
+
+| Stage | Layers |
+|---|---|
+| **Augmentation** (training only) | `RandomRotation(0.08)` → `RandomTranslation(0.1, 0.1)` → `RandomZoom(0.12)` |
+| **Block 1** | 2 × [`Conv2D(32, 3×3)` → `BatchNorm` → `ReLU`] → `MaxPool` → `Dropout(0.25)` |
+| **Block 2** | 2 × [`Conv2D(64, 3×3)` → `BatchNorm` → `ReLU`] → `MaxPool` → `Dropout(0.25)` |
+| **Block 3** | 1 × [`Conv2D(128, 3×3)` → `BatchNorm` → `ReLU`] → `MaxPool` → `Dropout(0.25)` |
+| **Classifier** | `Flatten` → `Dense(128)` → `BatchNorm` → `ReLU` → `Dropout(0.4)` → `Dense(10, softmax)` |
+
+**Training setup**
+
+| Setting | Value |
+|---|---|
+| Optimizer | Adam (`lr = 1e-3`) |
+| Loss | Sparse categorical cross-entropy |
+| Batch size | 128 |
+| Max epochs | 30 |
+| Validation split | 6,000 samples from the training set |
+| Callbacks | `EarlyStopping` (monitor `val_accuracy`, patience 5, restore best weights), `ReduceLROnPlateau` (factor 0.5, patience 2, min lr 1e-5) |
+| Random seed | 42 |
+
