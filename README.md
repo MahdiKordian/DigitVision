@@ -151,3 +151,48 @@ All numbers come from [`metrics.json`](metrics.json), which `train.py` generates
 | Data handling | NumPy, pandas |
 | Language | Python |
 
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10 or newer
+- `pip` (and optionally `venv`)
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/MahdiKordian/DigitVision.git
+cd DigitVision
+
+# 2. (Recommended) create and activate a virtual environment
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+```
+
+### Run the app
+
+The repository already includes the trained model (`mnist_model.keras`), so you can start right away:
+
+```bash
+streamlit run app.py
+```
+
+Then open the local URL shown in your terminal (usually <http://localhost:8501>).
+
+### (Optional) Retrain the model
+
+```bash
+python train.py
+```
+
+This downloads MNIST (if needed), trains the network, and saves:
+
+- `mnist_model.keras`: the trained model
+- `metrics.json`: accuracy, loss, parameters, epochs, training time and per-digit accuracy
+
+The app reads both files automatically.
+
