@@ -61,3 +61,39 @@ You can try it right now: **[digitvision-app.streamlit.app](https://digitvision-
 - **Prediction history**: the last 10 predictions of your session.
 - **Reproducible training**: fixed seeds and a single script (`train.py`) that also writes `metrics.json`.
 
+## ⚙️ How It Works
+
+```
+ Photo / Upload
+       │
+       ▼
+ Resize (max 800 px)
+       │
+       ▼
+ Enough red ink found? ── yes ──▶ HSV red-ink mask ──────┐
+       │ no                                              │
+       ▼                                                 │
+ Grayscale → Gaussian blur → Otsu threshold ─────────────┤
+ (auto-inverted if the background is dark)               │
+                                                         ▼
+                                       Morphological close + open
+                                                         │
+                                                         ▼
+                                    Contour detection → bounding box
+                                                         │
+                                                         ▼
+                           Scale to 20 px → pad to 28×28 → center of mass
+                                                         │
+                                                         ▼
+                                       CNN → softmax (10 classes)
+                                                         │
+                                                         ▼
+                                     Digit + confidence + charts
+```
+
+1. **Segmentation**: the image is searched for red ink first; if there isn't enough, it falls back to grayscale + Gaussian blur + Otsu thresholding (auto-inverted when the background is dark).
+2. **Cleanup**: morphological closing and opening remove noise and fill small gaps.
+3. **Localization**: contours with at least 10 % of the largest contour's area are merged into one bounding box.
+4. **Normalization**: the digit is resized so its longest side is 20 px, placed on a 28×28 canvas and shifted so its center of mass sits at the center.
+5. **Classification**: the CNN outputs a probability for each digit 0–9.
+
