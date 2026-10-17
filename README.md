@@ -141,3 +141,13 @@ Evaluated on the official 10,000-image MNIST test set. Early stopping ended trai
 
 All numbers come from [`metrics.json`](metrics.json), which `train.py` generates automatically.
 
+## 🛠 Tech Stack
+
+| Area | Tools |
+|---|---|
+| Deep learning | TensorFlow / Keras |
+| Computer vision | OpenCV (headless) |
+| Web app | Streamlit |
+| Data handling | NumPy, pandas |
+| Language | Python |
+
