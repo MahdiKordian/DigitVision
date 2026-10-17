@@ -121,3 +121,23 @@ A lightweight VGG-style CNN with built-in data augmentation, **289,066 parameter
 | Callbacks | `EarlyStopping` (monitor `val_accuracy`, patience 5, restore best weights), `ReduceLROnPlateau` (factor 0.5, patience 2, min lr 1e-5) |
 | Random seed | 42 |
 
+## 📊 Model Performance
+
+Evaluated on the official 10,000-image MNIST test set. Early stopping ended training after **15 epochs**.
+
+| Metric | Value |
+|---|---|
+| **Test accuracy** | **99.32 %** |
+| Test loss | 0.0205 |
+| Parameters | 289,066 |
+| Epochs run | 15 (of 30 max) |
+| Training time | ~23 min (1,376.7 s on the author's machine) |
+
+**Per-digit accuracy**
+
+| Digit | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **Accuracy** | 99.69 % | 99.82 % | 99.32 % | 99.80 % | 99.59 % | 98.77 % | 98.12 % | 99.51 % | 99.38 % | 99.01 % |
+
+All numbers come from [`metrics.json`](metrics.json), which `train.py` generates automatically.
+
