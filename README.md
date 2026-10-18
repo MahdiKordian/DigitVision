@@ -241,3 +241,14 @@ To deploy your own copy:
 
 Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
 
+## 👤 Author
+
+**Mahdi Kordian**, AI Engineer working with Machine Learning, Deep Learning, Generative AI and LLMs.
+
+[![GitHub](https://img.shields.io/badge/GitHub-MahdiKordian-181717?logo=github&logoColor=white)](https://github.com/MahdiKordian)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-mahdikordian-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mahdikordian/)
+[![Telegram](https://img.shields.io/badge/Telegram-MahdiKordian-26A5E4?logo=telegram&logoColor=white)](https://t.me/MahdiKordian/)
+[![X](https://img.shields.io/badge/X-@MahdiKordian-000000?logo=x&logoColor=white)](https://x.com/MahdiKordian/)
+[![YouTube](https://img.shields.io/badge/YouTube-@MahdiKordian-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@MahdiKordian/)
+
+If you find this project useful, a ⭐ on the [repository](https://github.com/MahdiKordian/DigitVision) is much appreciated.
