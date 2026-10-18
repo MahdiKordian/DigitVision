@@ -231,3 +231,9 @@ To deploy your own copy:
 
 > Make sure `mnist_model.keras` and `metrics.json` are committed. The app needs them at startup.
 
+## ⚠️ Limitations
+
+- DigitVision recognizes **a single digit per image**. Multi-digit numbers are not supported.
+- The model is trained on MNIST only. The 99.32 % figure is measured on MNIST's own test set; accuracy on real photos depends on lighting, pen thickness and image quality, which is why the preprocessing pipeline and confidence indicator exist.
+- Unusual writing styles (for example a crossed 7 or a looped 1) may reduce confidence.
+
