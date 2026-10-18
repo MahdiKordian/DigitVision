@@ -204,3 +204,18 @@ The app reads both files automatically.
 - Avoid shadows, glare and busy backgrounds.
 - If the result card turns orange or red, the model is unsure: retake the photo with better light or a bigger digit.
 
+## 📁 Project Structure
+
+```
+DigitVision/
+├── app.py              # Streamlit web app (UI, preprocessing, inference)
+├── train.py            # Model definition, training and evaluation
+├── config.py           # App name, version, tagline and file paths
+├── requirements.txt    # Python dependencies
+├── mnist_model.keras   # Trained model
+├── metrics.json        # Evaluation results shown in the app
+├── LICENSE             # MIT License
+├── .gitignore
+└── README.md
+```
+
