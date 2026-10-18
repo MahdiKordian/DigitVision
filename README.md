@@ -219,3 +219,15 @@ DigitVision/
 └── README.md
 ```
 
+## ☁️ Deployment
+
+The live demo is hosted on **Streamlit Community Cloud**: [digitvision-app.streamlit.app](https://digitvision-app.streamlit.app).
+
+To deploy your own copy:
+
+1. Fork this repository.
+2. Go to [share.streamlit.io](https://share.streamlit.io) and create a new app from your fork.
+3. Set the main file to `app.py` and deploy.
+
+> Make sure `mnist_model.keras` and `metrics.json` are committed. The app needs them at startup.
+
