@@ -196,3 +196,11 @@ This downloads MNIST (if needed), trains the network, and saves:
 
 The app reads both files automatically.
 
+## 💡 Usage Tips
+
+- Write **one** digit, **large and clear**, in the frame.
+- A **red marker on white paper** gives the most reliable detection.
+- A dark pen on light paper works too.
+- Avoid shadows, glare and busy backgrounds.
+- If the result card turns orange or red, the model is unsure: retake the photo with better light or a bigger digit.
+
